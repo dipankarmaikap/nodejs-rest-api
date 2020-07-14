@@ -1,0 +1,15 @@
+const express = require("express");
+const router = express.Router();
+const userController = require("../controllers/user-controller");
+const auth = require("../middleware/auth");
+router.post("/signup", userController.signUp);
+router.post("/activate-account", userController.activateAccount);
+router.post("/login", userController.logIn);
+router.post("/reset-password", userController.resetPassword);
+router.post("/confirm-reset-password", userController.confirmResetPassword);
+router.get("/users/me", auth, userController.getUserRoute);
+router.patch("/users/me", auth, userController.patchUserRoute);
+router.delete("/users/me", auth, userController.deleteUserRoute);
+router.post("/users/logout", auth, userController.postUserLogoutRoute);
+router.post("/users/logoutall", auth, userController.postUserLogoutAllRoute);
+module.exports = router;
