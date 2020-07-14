@@ -1,18 +1,8 @@
 const nodemailer = require("nodemailer");
 
 exports.sendAccountVerificationEmail = async (token, email, name) => {
-  let transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_HOST_PORT),
-    secure: process.env.EMAIL_HOST_PORT === "465" ? true : false, // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_ADDRESS, // generated ethereal user
-      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
-    },
-  });
-
   try {
-    let info = await transporter.sendMail({
+    let info = await transporter().sendMail({
       from: '"Dipankar Maikap 👻" <mail@motewebservices.com>', // sender address
       to: email, // list of receivers
       subject: "Verify your account ✔", // Subject line
@@ -27,18 +17,8 @@ exports.sendAccountVerificationEmail = async (token, email, name) => {
   }
 };
 exports.sendResetPassswordEmail = async (token, email, name) => {
-  let transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_HOST_PORT),
-    secure: process.env.EMAIL_HOST_PORT === "465" ? true : false, // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_ADDRESS, // generated ethereal user
-      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
-    },
-  });
-
   try {
-    let info = await transporter.sendMail({
+    let info = await transporter().sendMail({
       from: '"Dipankar Maikap 👻" <mail@motewebservices.com>', // sender address
       to: email, // list of receivers
       subject: "Reset Password ✔", // Subject line
@@ -51,4 +31,16 @@ exports.sendResetPassswordEmail = async (token, email, name) => {
   } catch (error) {
     console.log(error);
   }
+};
+exports.transporter = () => {
+  let transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: parseInt(process.env.EMAIL_HOST_PORT),
+    secure: process.env.EMAIL_HOST_PORT === "465" ? true : false, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_ADDRESS, // generated ethereal user
+      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
+    },
+  });
+  return transporter;
 };
